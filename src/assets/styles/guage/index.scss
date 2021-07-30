@@ -1,0 +1,24 @@
+/**
+ * Gauge
+ */
+$gauge: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
+        5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+        60, 70, 80, 90, 100;
+
+@each $i in $gauge {
+  .m-#{$i} { margin: $i+px; }
+  .m-t#{$i} { margin-top: $i+px; }
+  .m-b#{$i} { margin-bottom: $i+px; }
+  .m-l#{$i} { margin-left: $i+px; }
+  .m-r#{$i} { margin-right: $i+px; }
+  .m-lr#{$i} { margin-left: $i+px; margin-right: $i+px; }
+  .m-tb#{$i} { margin-top: $i+px; margin-bottom: $i+px; }
+
+  .p-#{$i} { padding: $i+px; }
+  .p-t#{$i} { padding-top: $i+px; }
+  .p-b#{$i} { padding-bottom: $i+px; }
+  .p-l#{$i} { padding-left: $i+px; }
+  .p-r#{$i} { padding-right: $i+px; }
+  .p-lr#{$i} { padding-left: $i+px; padding-right: $i+px; }
+  .p-tb#{$i} { padding-top: $i+px; padding-bottom: $i+px; }
+}

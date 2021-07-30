@@ -1,0 +1,12 @@
+
+@import url("../variable/index.scss");
+.light {
+  .header-menu{
+    background-color: $color-light;
+  }
+}
+.dark {
+  .header-menu{
+    background-color: $color-dark;
+  }
+}

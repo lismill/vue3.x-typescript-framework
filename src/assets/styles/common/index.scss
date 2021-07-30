@@ -1,0 +1,63 @@
+/**
+ * Reset
+ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+ul li, li { list-style: none; }
+body { line-height: 1.75; font-size: 14px; color: #2c3e50; font-family: Avenir, Helvetica, Arial, sans-serif; }
+.svg-icon:focus { outline: none; }
+
+/**
+ * Cursor
+ */
+$cursor: pointer;
+@each $i in $cursor {
+  .cursor-#{$i} { cursor: $i; }
+}
+
+/**
+ * Flex
+ */
+.flex { display: flex; align-items: center; flex-wrap: wrap; }
+.flex-center { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+
+$flex-x: "center", "space-between", "space-around", "space-evenly";
+$flex-y: "center", "flex-start", "flex-end", "space-evenly", "baseline";
+@each $i in $flex-x {
+  .flex-x-#{$i} { display: flex; justify-content: #{$i}; flex-wrap: wrap; }
+  .flex-y-#{$i} { display: flex; align-items: #{$i}; flex-wrap: wrap; }
+}
+
+/**
+ * Color & Background
+ */
+ $colors: (
+  "primary": #1890ff,
+  "dark": #001529,
+  "light": #1890ff,
+  // white
+  "w": #ffffff,
+  "w-1": #fefefe,
+  "w-2": #f7f7f7,
+  "w-3": #efefef,
+  "w-4": #eeeeee,
+  "w-5": #dddddd,
+  "w-6": #cccccc,
+  "w-7": #bbbbbb,
+  "w-8": #aaaaaa,
+  // black
+  "b": #000000,
+  "b-1": #111111,
+  "b-2": #222222,
+  "b-3": #333333,
+  "b-4": #444444,
+  "b-5": #555555,
+  "b-6": #666666,
+  "b-7": #777777,
+  "b-8": #888888,
+  "b-9": #999999,
+);
+
+@each $colorKey, $color in $colors{
+  .color-#{$colorKey}{ color: $color; }
+  .bg-#{$colorKey} { background-color: $color; }
+}
