@@ -13,7 +13,7 @@
 - [x] CSS 样式系统（基础版本，需要多次迭代修改）
 - [ ] 基础框架搭建
 - [x] Vscode 代码片段（基础版本，需要多次迭代修改）
-- [ ] 多主题切换
+- [x] 多主题切换
 - [x] I18N 国际化
 - [ ] Router
 - [ ] Axios
@@ -449,22 +449,25 @@ createApp(App).component('svg-icon', svgIcon)
 │  ├── ├── ├── element                                 # 覆盖 element 样式
 │  ├── ├── ├── guage                                   # 内外边距
 │  ├── ├── ├── layout                                  # 基础框架样式
+│  ├── ├── ├── theme                                   # 多主题样式
 │  ├── ├── ├── variable                                # 全局样式变量
 │  ├── ├── ├── index.scss                              # 入口文件
 │  ├── ├── svg                                         # svg 文件
-│  ├── components
+│  ├── components                                      # 全局公共组件
 │  ├── language                                        # i18n 多语言
 │  ├── ├── ├── en.ts                                   # 英文配置
 │  ├── ├── ├── i18n.ts                                 # 注册多 i18n 语言实例
 │  ├── ├── ├── index.ts                                # 入口文件
 │  ├── ├── ├── ja.ts                                   # 日文配置
 │  ├── ├── ├── zh-CN.ts                                # 中文配置
-│  ├── router
-│  ├── ├── index.ts
-│  ├── ├── modules
-│  ├── store
-│  ├── ├── index.ts
-│  ├── ├── modules
+│  ├── router                                          # 路由
+│  ├── ├── index.ts                                    # 路由入口文件
+│  ├── ├── modules                                     # 路由模块
+│  ├── store                                           # vuex
+│  ├── ├── index.ts                                    # vuex 入口文件
+│  ├── ├── modules                                     # vuex 模块
+│  ├── utils                                           # 工具类
+│  ├── ├── common                                      # 全局公共方法
 │  ├── views                                           # 所有视图
 │  ├── App.vue                                         # 入口页面
 │  ├── main.ts                                         # 入口文件

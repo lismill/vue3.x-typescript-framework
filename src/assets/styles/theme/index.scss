@@ -6,10 +6,10 @@
   }
 }
 
-// theme-light
-.theme-light {
+// theme-green
+.theme-green {
   .header-menu, .aside-menu {
-    background-color: $color-light;
+    background-color: $color-green;
   }
 }
 
@@ -24,5 +24,19 @@
 .theme-orange {
   .header-menu, .aside-menu {
     background-color: $color-orange;
+  }
+}
+
+// theme-yellow
+.theme-yellow {
+  .header-menu, .aside-menu {
+    background-color: $color-yellow;
+  }
+}
+
+// theme-gray
+.theme-gray {
+  .header-menu, .aside-menu {
+    background-color: $color-gray;
   }
 }
