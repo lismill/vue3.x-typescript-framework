@@ -3,6 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import { renderTheme } from '@/utils/common'
 
 /**
  * Element Plus
@@ -25,6 +26,11 @@ import '@/assets/styles/index.scss'
  * I18N
  */
 import i18n from '@/language/i18n'
+
+/**
+ * Render Theme
+ */
+renderTheme()
 
 const app = createApp(App)
 app.use(store)

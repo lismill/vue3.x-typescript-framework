@@ -1,12 +1,28 @@
-
 @import url("../variable/index.scss");
-.light {
-  .header-menu{
+// theme-dark
+.theme-dark {
+  .header-menu, .aside-menu {
+    background-color: $color-dark;
+  }
+}
+
+// theme-light
+.theme-light {
+  .header-menu, .aside-menu {
     background-color: $color-light;
   }
 }
-.dark {
-  .header-menu{
-    background-color: $color-dark;
+
+// theme-blue
+.theme-blue {
+  .header-menu, .aside-menu {
+    background-color: $color-blue;
+  }
+}
+
+// theme-orange
+.theme-orange {
+  .header-menu, .aside-menu {
+    background-color: $color-orange;
   }
 }

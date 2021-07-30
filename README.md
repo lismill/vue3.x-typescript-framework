@@ -626,15 +626,15 @@ $color-primary: #1890ff;
 $color-dark: #001529;
 $color-light: #1890ff;
 // white
-$color-l: #ffffff;
-$color-l-1: #fefefe;
-$color-l-2: #f7f7f7;
-$color-l-3: #efefef;
-$color-l-4: #eeeeee;
-$color-l-5: #dddddd;
-$color-l-6: #cccccc;
-$color-l-7: #bbbbbb;
-$color-l-8: #aaaaaa;
+$color-w: #ffffff;
+$color-w-1: #fefefe;
+$color-w-2: #f7f7f7;
+$color-w-3: #efefef;
+$color-w-4: #eeeeee;
+$color-w-5: #dddddd;
+$color-w-6: #cccccc;
+$color-w-7: #bbbbbb;
+$color-w-8: #aaaaaa;
 // black
 $color-b: #000000;
 $color-b-1: #111111;
@@ -801,6 +801,177 @@ $color-b-9: #999999;
 
 
 ## 1. 多主题切换
+
+多主题的实现方式有很多种，考虑到对整体框架结构的污染和编译打包配置关联，此框架暂时选用实现最简单、配置最简单的动态 class 方式
+
+### 1.1 创建多主题公共组件
+
+`@/components/s-picker-theme/index.vue`
+
+```vue
+<template>
+  <el-popover popper-class="popper-theme" title="主题色" trigger="hover">
+    <template #reference>
+      <slot></slot>
+    </template>
+    <div class="themes flex">
+      <div
+        class="theme"
+        v-for="theme in themes"
+        :key="theme.key"
+        @click="changeTheme(theme)"
+      >
+        <el-tooltip :content="theme.value">
+          <div
+            :class="theme.key"
+            :style="{ backgroundColor: theme.color }"
+          ></div>
+        </el-tooltip>
+      </div>
+    </div>
+  </el-popover>
+</template>
+
+<script lang='ts'>
+import { defineComponent, ref } from 'vue'
+import { ElLoading } from 'element-plus'
+
+export default defineComponent({
+  setup () {
+    // 默认主题色
+    const themes = ref([
+      { key: 'theme-dark', value: '深色', color: '#001529' },
+      { key: 'theme-light', value: '浅色', color: '#ffffff' },
+      { key: 'theme-blue', value: '蓝色', color: '#1890ff' },
+      { key: 'theme-orange', value: '橙色', color: '#ed6827' }
+    ])
+
+    // 切换主题色
+    const changeTheme = (item: { key: string}) => {
+      // 设置本地存储 & 修改app class
+      localStorage.setItem('syy_theme', item.key)
+      const app = document.querySelector('#app')
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      app!.className = item.key
+
+      // 开启切换主题提示
+      const loadingInstance = ElLoading.service({
+        text: '切换主题中...'
+      })
+
+      // 关闭切换主题提示
+      setTimeout(() => loadingInstance.close(), 360)
+    }
+
+    return {
+      themes,
+      changeTheme
+    }
+  }
+})
+</script>
+<style scoped lang="scss">
+.themes {
+  .theme {
+    width: 26px;
+    height: 26px;
+    padding: 1px;
+    margin-right: 4px;
+    border-radius: 2px;
+    border: 1px solid #dddddd;
+    & > div {
+      opacity: 1;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    & > div:hover {
+      opacity: 0.75;
+    }
+  }
+}
+</style>
+```
+
+
+
+### 1.2 创建各主题样式
+
+`@/assets/styles/theme/index.scss`
+
+```scss
+@import url("../variable/index.scss");
+// theme-dark
+.theme-dark {
+  .header-menu, .aside-menu {
+    background-color: $color-dark;
+  }
+}
+
+// theme-light
+.theme-light {
+  .header-menu, .aside-menu {
+    background-color: $color-light;
+  }
+}
+
+// theme-blue
+.theme-blue {
+  .header-menu, .aside-menu {
+    background-color: $color-blue;
+  }
+}
+
+// theme-orange
+.theme-orange {
+  .header-menu, .aside-menu {
+    background-color: $color-orange;
+  }
+}
+```
+
+
+
+### 1.3 创建默认主题方法
+
+`@/utils/common/index.ts`
+
+```typescript
+/**
+ * 设置为本地存储的主题色
+ * {default} - theme-dark
+ */
+export const renderTheme = (): void => {
+  const theme = localStorage.getItem('syy_theme') || 'theme-dark'
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  document.querySelector('#app')!.className = theme
+}
+```
+
+
+
+### 1.4 入口文件设置默认主题
+
+`./src/main.ts`
+
+```
+import { renderTheme } from '@/utils/common'
+renderTheme()
+```
+
+
+
+### 1.5 使用方法
+
+```vue
+<s-picker-theme>
+  // 自定义触发选择多主题内容
+  <span class="cursor-pointer">切换主题</span>
+</s-picker-theme>
+```
+
+
 
 ## 1. I18N 国际化
 
