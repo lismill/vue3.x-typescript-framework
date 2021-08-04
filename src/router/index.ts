@@ -1,20 +1,27 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+
+import develop from './modules/develop'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Dashboard',
+    component: (): Promise<typeof import('*.vue')> =>
+      import(
+      /* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'
+      ),
+    meta: {
+      icon: 'home',
+      size: '23px',
+      title: '首页'
+    }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/:catchAll(.*)',
+    name: '404',
+    component: () => import(/* webpackChunkName: "404" */ '@/components/s-not-found/index.vue')
+  },
+  develop
 ]
 
 const router = createRouter({
@@ -24,7 +31,7 @@ const router = createRouter({
 
 // 设置动态标题
 router.beforeEach((to, from, next) => {
-  document.title = `管理后台${to.meta.title ? ' - ' + to.meta.title : ''}`
+  document.title = `Vue.js3.x + TypeScript 后台管理中心${to.meta.title ? ' - ' + to.meta.title : ''}`
   next()
 })
 

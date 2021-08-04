@@ -34,7 +34,9 @@ export default defineComponent({
   },
   setup (props) {
     const iconName = computed(() => `#icon-${props.name}`)
-    const svgClass = computed(() => props.name ? `svg-icon icon-${props.name}` : 'svg-icon')
+    const svgClass = computed(() =>
+      props.name ? `svg-icon icon-${props.name}` : 'svg-icon'
+    )
     return {
       iconName,
       svgClass

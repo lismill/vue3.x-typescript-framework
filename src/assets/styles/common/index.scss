@@ -3,8 +3,15 @@
  */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 ul li, li { list-style: none; }
+a { text-decoration: none; }
 body { line-height: 1.75; font-size: 14px; color: #2c3e50; font-family: Avenir, Helvetica, Arial, sans-serif; }
+
+/**
+ * Common
+ */
 .svg-icon:focus { outline: none; }
+.text-center { text-align: center; }
+.display-none { display: none; }
 
 /**
  * Cursor
@@ -17,13 +24,14 @@ $cursor: pointer;
 /**
  * Flex
  */
-.flex { display: flex; align-items: center; flex-wrap: wrap; }
+.flex { display: flex; flex-wrap: wrap; }
 .flex-center { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-
 $flex-x: "center", "space-between", "space-around", "space-evenly";
 $flex-y: "center", "flex-start", "flex-end", "space-evenly", "baseline";
 @each $i in $flex-x {
   .flex-x-#{$i} { display: flex; justify-content: #{$i}; flex-wrap: wrap; }
+}
+@each $i in $flex-y {
   .flex-y-#{$i} { display: flex; align-items: #{$i}; flex-wrap: wrap; }
 }
 
@@ -33,17 +41,24 @@ $flex-y: "center", "flex-start", "flex-end", "space-evenly", "baseline";
  $colors: (
   "primary": #1890ff,
   "dark": #001529,
-  "light": #1890ff,
+  "light": #ffffff,
+  "green": #67C23A,
+  "blue": #1890ff,
+  "blue-1": #1C3FAA,
+  "orange": #ed6827,
+  "yellow": #e6a23c,
+  "gray": #909399,
   // white
   "w": #ffffff,
   "w-1": #fefefe,
-  "w-2": #f7f7f7,
-  "w-3": #efefef,
-  "w-4": #eeeeee,
-  "w-5": #dddddd,
-  "w-6": #cccccc,
-  "w-7": #bbbbbb,
-  "w-8": #aaaaaa,
+  "w-2": #f0f2f5,
+  "w-3": #f7f7f7,
+  "w-4": #efefef,
+  "w-5": #eeeeee,
+  "w-6": #dddddd,
+  "w-7": #cccccc,
+  "w-8": #bbbbbb,
+  "w-9": #aaaaaa,
   // black
   "b": #000000,
   "b-1": #111111,
@@ -56,8 +71,18 @@ $flex-y: "center", "flex-start", "flex-end", "space-evenly", "baseline";
   "b-8": #888888,
   "b-9": #999999,
 );
-
 @each $colorKey, $color in $colors{
   .color-#{$colorKey}{ color: $color; }
   .bg-#{$colorKey} { background-color: $color; }
+}
+
+/**
+ * Font size
+ */
+ $fonts: (
+  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  22, 24, 26, 28, 30, 32, 34, 36, 38, 40
+);
+@each $font in $fonts{
+  .font-#{$font}{ font-size: $font + px; }
 }

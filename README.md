@@ -11,13 +11,13 @@
 - [x] 配置 SVG
 - [x] 目录结构规范（基础版本，需要多次迭代修改）
 - [x] CSS 样式系统（基础版本，需要多次迭代修改）
-- [ ] 基础框架搭建
+- [x] 基础框架搭建
 - [x] Vscode 代码片段（基础版本，需要多次迭代修改）
 - [x] 多主题切换
 - [x] I18N 国际化
-- [ ] Router
+- [x] Router
 - [ ] Axios
-- [ ] Mock
+- [x] Mock
 - [ ] Vuex
 - [ ] 公共组件
 - [ ] 自定义指令
@@ -120,7 +120,9 @@ module.exports = {
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-unused-vars': 'error',
+    '@typescript-eslint/no-explicit-any': 'off',
   }
 }
 ```
@@ -362,7 +364,6 @@ requireAll(req)
 ```vue
 <template>
   <svg
-    v-bind="$attrs"
     :class="svgClass"
     :style="{
       color: color,
@@ -425,7 +426,7 @@ export default defineComponent({
 import '@/components/s-svg-icon/index'
 import svgIcon from '@/components/s-svg-icon/index.vue'
 
-createApp(App).component('svg-icon', svgIcon)
+createApp(App).component('s-svg-icon', svgIcon)
 ```
 
 
@@ -481,7 +482,7 @@ createApp(App).component('svg-icon', svgIcon)
 
 ### 1.1 常用样式
 
-#### 1.1.1 常用样式文件
+#### 1.1.1 全局样式文件
 
 `@/assets/assets/styles/common/index.scss`
 
@@ -491,8 +492,15 @@ createApp(App).component('svg-icon', svgIcon)
  */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 ul li, li { list-style: none; }
+a { text-decoration: none; }
 body { line-height: 1.75; font-size: 14px; color: #2c3e50; font-family: Avenir, Helvetica, Arial, sans-serif; }
+
+/**
+ * Common
+ */
 .svg-icon:focus { outline: none; }
+.text-center { text-align: center; }
+.display-none { display: none; }
 
 /**
  * Cursor
@@ -505,39 +513,15 @@ $cursor: pointer;
 /**
  * Flex
  */
-.flex { display: flex; align-items: center; flex-wrap: wrap; }
+.flex { display: flex; flex-wrap: wrap; }
 .flex-center { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-
 $flex-x: "center", "space-between", "space-around", "space-evenly";
 $flex-y: "center", "flex-start", "flex-end", "space-evenly", "baseline";
 @each $i in $flex-x {
   .flex-x-#{$i} { display: flex; justify-content: #{$i}; flex-wrap: wrap; }
-  .flex-y-#{$i} { display: flex; align-items: #{$i}; flex-wrap: wrap; }
 }
-
-/**
- * Gauge
- */
-$gauge: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
-        5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
-        60, 70, 80, 90, 100;
-
-@each $i in $gauge {
-  .m-#{$i} { margin: $i+px; }
-  .m-t#{$i} { margin-top: $i+px; }
-  .m-b#{$i} { margin-bottom: $i+px; }
-  .m-l#{$i} { margin-left: $i+px; }
-  .m-r#{$i} { margin-right: $i+px; }
-  .m-lr#{$i} { margin-left: $i+px; margin-right: $i+px; }
-  .m-tb#{$i} { margin-top: $i+px; margin-bottom: $i+px; }
-
-  .p-#{$i} { padding: $i+px; }
-  .p-t#{$i} { padding-top: $i+px; }
-  .p-b#{$i} { padding-bottom: $i+px; }
-  .p-l#{$i} { padding-left: $i+px; }
-  .p-r#{$i} { padding-right: $i+px; }
-  .p-lr#{$i} { padding-left: $i+px; padding-right: $i+px; }
-  .p-tb#{$i} { padding-top: $i+px; padding-bottom: $i+px; }
+@each $i in $flex-y {
+  .flex-y-#{$i} { display: flex; align-items: #{$i}; flex-wrap: wrap; }
 }
 
 /**
@@ -546,17 +530,24 @@ $gauge: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
  $colors: (
   "primary": #1890ff,
   "dark": #001529,
-  "light": #1890ff,
+  "light": #ffffff,
+  "green": #67C23A,
+  "blue": #1890ff,
+  "blue-1": #1C3FAA,
+  "orange": #ed6827,
+  "yellow": #e6a23c,
+  "gray": #909399,
   // white
   "w": #ffffff,
   "w-1": #fefefe,
-  "w-2": #f7f7f7,
-  "w-3": #efefef,
-  "w-4": #eeeeee,
-  "w-5": #dddddd,
-  "w-6": #cccccc,
-  "w-7": #bbbbbb,
-  "w-8": #aaaaaa,
+  "w-2": #f0f2f5,
+  "w-3": #f7f7f7,
+  "w-4": #efefef,
+  "w-5": #eeeeee,
+  "w-6": #dddddd,
+  "w-7": #cccccc,
+  "w-8": #bbbbbb,
+  "w-9": #aaaaaa,
   // black
   "b": #000000,
   "b-1": #111111,
@@ -569,12 +560,21 @@ $gauge: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
   "b-8": #888888,
   "b-9": #999999,
 );
-
 @each $colorKey, $color in $colors{
   .color-#{$colorKey}{ color: $color; }
   .bg-#{$colorKey} { background-color: $color; }
 }
 
+/**
+ * Font size
+ */
+ $fonts: (
+  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  22, 24, 26, 28, 30, 32, 34, 36, 38, 40
+);
+@each $font in $fonts{
+  .font-#{$font}{ font-size: $font + px; }
+}
 ```
 
 
@@ -666,7 +666,58 @@ $color-b-9: #999999;
 
 
 
+### 1.3 全局边距样式
+
+#### 1.3.1 全局边距样式文件
+
+`@/assets/styles/guage/index.scss`
+
+```
+/**
+ * Gauge
+ */
+$gauge: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20,
+        5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+        60, 70, 80, 90, 100;
+
+@each $i in $gauge {
+  .m-#{$i} { margin: $i+px; }
+  .m-t#{$i} { margin-top: $i+px; }
+  .m-b#{$i} { margin-bottom: $i+px; }
+  .m-l#{$i} { margin-left: $i+px; }
+  .m-r#{$i} { margin-right: $i+px; }
+  .m-lr#{$i} { margin-left: $i+px; margin-right: $i+px; }
+  .m-tb#{$i} { margin-top: $i+px; margin-bottom: $i+px; }
+
+  .p-#{$i} { padding: $i+px; }
+  .p-t#{$i} { padding-top: $i+px; }
+  .p-b#{$i} { padding-bottom: $i+px; }
+  .p-l#{$i} { padding-left: $i+px; }
+  .p-r#{$i} { padding-right: $i+px; }
+  .p-lr#{$i} { padding-left: $i+px; padding-right: $i+px; }
+  .p-tb#{$i} { padding-top: $i+px; padding-bottom: $i+px; }
+}
+```
+
+
+
+#### 1.3.2 全局边距样式用法
+
+```
+<div class="m-10"></div>
+// margin: 10px;
+
+<div class="p-10"></div>
+// padding: 10px;
+```
+
+
+
 ## 1. 基础框架搭建
+
+![](https://img01.71360.com/file/read/www/M00/78/08/wKj0iWEJEnOAJ49DAABHw759aqs174.png)
+
+
 
 ## 1. Vscode 代码片段
 
@@ -809,7 +860,7 @@ $color-b-9: #999999;
 
 ### 1.1 创建多主题公共组件
 
-`@/components/s-picker-theme/index.vue`
+`@/components/s-theme-picker/index.vue`
 
 ```vue
 <template>
@@ -968,10 +1019,10 @@ renderTheme()
 ### 1.5 使用方法
 
 ```vue
-<s-picker-theme>
+<s-theme-picker>
   // 自定义触发选择多主题内容
   <span class="cursor-pointer">切换主题</span>
-</s-picker-theme>
+</s-theme-picker>
 ```
 
 
@@ -1142,9 +1193,163 @@ config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js')
 
 ## 1. Router
 
+### 1.1 全局引入
+
+`./main.ts`
+
+```typescript
+import router from './router'
+app.use(router)
+```
+
+
+
+### 1.2 路由配置
+
+`@/router/index.ts`
+
+```typescript
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+
+import develop from './modules/develop'
+
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: 'Dashboard',
+    component: (): Promise<typeof import('*.vue')> =>
+      import(
+      /* webpackChunkName: "dashboard" */ '@/views/dashboard/index.vue'
+      ),
+    meta: {
+      icon: 'home',
+      size: '20px',
+      title: '首页'
+    }
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: '404',
+    component: () => import(/* webpackChunkName: "404" */ '@/components/s-not-found/index.vue')
+  },
+  develop
+]
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
+})
+
+// 设置动态标题
+router.beforeEach((to, from, next) => {
+  document.title = `管理后台${to.meta.title ? ' - ' + to.meta.title : ''}`
+  next()
+})
+
+export default router
+```
+
+
+
 ## 1. Axios
 
 ## 1. Mock
+
+### 1.1 方式1：MOCK假数据
+
+#### 1.1.1 安装依赖
+
+```shell
+cnpm install mockjs --save
+```
+
+
+
+#### 1.1.2 添加 .env.mock
+
+`./.env.mock`
+
+```json
+NODE_ENV = 'development'
+VUE_APP_VERSION = 'development'
+VUE_APP_BASE_URL = '/development'
+
+VUE_APP_MOCK = true
+```
+
+
+
+#### 1.1.3 全局引入
+
+`main.ts`
+
+```typescript
+/**
+ * mock
+ */
+process.env.VUE_APP_MOCK && require('@/request/mock/index')
+```
+
+
+
+#### 1.1.4 拦截接口请求
+
+`@/request/mock/dashboard`
+
+```typescript
+import Mock from 'mockjs'
+
+const mockHomeConfig: any = []
+for (let i = 0; i < 10; i++) {
+  mockHomeConfig.push({
+    name: Mock.Random.cname(),
+    county: Mock.Random.county(true)
+  })
+}
+Mock.mock('/home/config', 'get', mockHomeConfig)
+```
+
+
+
+#### 1.1.5 启动 MOCK 环境
+
+```shell
+npm run mock
+```
+
+
+
+### 1.2 方式2：MOCK 接口地址返回数据
+
+#### 1.2.1 添加 .env.mock
+
+`./.env.mock`
+
+```typescript
+NODE_ENV = 'development'
+
+VUE_APP_VERSION = 'development'
+
+# MOCK 地址
+VUE_APP_BASE_URL = '/mock'
+
+```
+
+
+
+#### 1.2.2 AXIOS 配置全局请求地址
+
+`详见 axios 配置`
+
+
+
+#### 1.2.3 启动 MOCK 环境
+
+```
+npm run mock
+```
+
+
 
 ## 1. Vuex
 

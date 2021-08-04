@@ -15,7 +15,6 @@ import 'element-plus/lib/theme-chalk/index.css'
  * SVG
  */
 import '@/components/s-svg-icon/index'
-import svgIcon from '@/components/s-svg-icon/index.vue'
 
 /**
  * Styles
@@ -28,6 +27,11 @@ import '@/assets/styles/index.scss'
 import i18n from '@/language/i18n'
 
 /**
+ * Components
+ */
+import componsnts from '@/components/index'
+
+/**
  * Render Theme
  */
 renderTheme()
@@ -37,5 +41,5 @@ app.use(store)
 app.use(router)
 app.use(ElementPlus)
 app.use(i18n)
-app.component('svg-icon', svgIcon)
+componsnts.forEach(item => app.component(item.name, item.component))
 app.mount('#app')

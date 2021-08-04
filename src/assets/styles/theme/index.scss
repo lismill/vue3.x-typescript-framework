@@ -1,42 +1,132 @@
 @import url("../variable/index.scss");
+.theme-dark-popper a { color: $color-w; &:hover { color: $color-primary; }}
+.theme-blue-popper a { color: $color-b-3; &:hover { color: $color-primary; }}
+.theme-orange-popper a { color: $color-b-3; &:hover { color: $color-primary; }}
+.theme-blue-1-popper a { color: $color-b-3; &:hover { color: $color-primary; }}
 // theme-dark
 .theme-dark {
-  .header-menu, .aside-menu {
+  .header-menu {
+    a {
+      color: $color-w !important;
+    }
+  }
+  .header-menu,
+  .aside-menu,
+  .header-menu .aside-menu .svg-icon {
+    color: $color-w;
+  }
+  .aside-menu{
+    background-color: $color-w;
+  }
+  .header-menu,
+  .aside-menu .left,
+  .aside-menu .left .icon .hidden-menu {
     background-color: $color-dark;
   }
-}
 
-// theme-green
-.theme-green {
-  .header-menu, .aside-menu {
-    background-color: $color-green;
+  .aside-menu .left .icon .hidden-menu-item:hover,
+  .aside-menu .left .icon .hidden-menu-item.active,
+  .aside-menu .left .icon .item:hover,
+  .aside-menu .left .icon .item.active {
+    color: $color-primary;
+  }
+  .aside-menu .right {
+    color: $color-b-3;
   }
 }
 
 // theme-blue
 .theme-blue {
-  .header-menu, .aside-menu {
+  .header-menu {
+    a {
+      color: $color-w !important;
+    }
+  }
+  .header-menu,
+  .aside-menu,
+  .header-menu .aside-menu .svg-icon {
+    color: $color-w;
+  }
+  .aside-menu{
+    background-color: $color-w;
+  }
+  .header-menu,
+  .aside-menu .left,
+  .aside-menu .left .icon .hidden-menu {
     background-color: $color-blue;
+  }
+
+  .aside-menu .left .icon .hidden-menu-item:hover,
+  .aside-menu .left .icon .hidden-menu-item.active,
+  .aside-menu .left .icon .item:hover,
+  .aside-menu .left .icon .item.active {
+    color: $color-orange;
+  }
+  .aside-menu .right {
+    color: $color-b-3;
   }
 }
 
 // theme-orange
 .theme-orange {
-  .header-menu, .aside-menu {
+  .header-menu {
+    a {
+      color: $color-w !important;
+    }
+  }
+  .header-menu,
+  .aside-menu,
+  .header-menu .aside-menu .svg-icon {
+    color: $color-w;
+  }
+  .aside-menu{
+    background-color: $color-w;
+  }
+  .header-menu,
+  .aside-menu .left,
+  .aside-menu .left .icon .hidden-menu {
     background-color: $color-orange;
   }
-}
 
-// theme-yellow
-.theme-yellow {
-  .header-menu, .aside-menu {
-    background-color: $color-yellow;
+  .aside-menu .left .icon .hidden-menu-item:hover,
+  .aside-menu .left .icon .hidden-menu-item.active,
+  .aside-menu .left .icon .item:hover,
+  .aside-menu .left .icon .item.active {
+    color: $color-primary;
+  }
+  .aside-menu .right {
+    color: $color-b-3;
   }
 }
 
-// theme-gray
-.theme-gray {
-  .header-menu, .aside-menu {
-    background-color: $color-gray;
+// theme-blue-1
+.theme-blue-1 {
+  .header-menu {
+    a {
+      color: $color-w !important;
+    }
+  }
+  .header-menu,
+  .aside-menu,
+  .header-menu .aside-menu .svg-icon {
+    color: $color-w;
+  }
+  .aside-menu{
+    background-color: $color-w;
+  }
+  .header-menu,
+  .aside-menu .left,
+  .aside-menu .left .icon .hidden-menu {
+    background-color: $color-blue-1;
+  }
+
+  .aside-menu .left .icon .hidden-menu-item:hover,
+  .aside-menu .left .icon .hidden-menu-item.active,
+  .aside-menu .left .icon .item:hover,
+  .aside-menu .left .icon .item.active {
+    color: $color-primary;
+  }
+  .aside-menu .right {
+    color: $color-b-3;
   }
 }

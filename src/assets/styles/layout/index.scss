@@ -1,0 +1,130 @@
+html {
+  overflow: hidden;
+}
+.container {
+  // header
+  .header-menu {
+    height: 64px;
+    // left
+    .left {
+      line-height: 64px;
+      .logo {
+        img {
+          width: 95px;
+          opacity: .9;
+          &:hover {
+            opacity: 1;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    // right
+    .right {
+      height: 24px;
+      line-height: 24px;
+      .el-icon {
+        font-size: 17px;
+      }
+    }
+  }
+
+  // footer
+  .container-footer {
+    display: flex;
+    .aside-menu {
+      display: flex;
+      position: relative;
+      z-index: 99;
+      height: calc(100vh - 64px);
+      left: 0;
+      bottom: 0;
+      .left {
+        position: relative;
+        z-index: 99;
+        width: 60px;
+        .icon {
+          .item {
+            height: 46px;
+            &:hover, &.active {
+              cursor: pointer;
+            }
+            .tooltip {
+              width: 100%;
+              height: 100%;
+              text-align: center;
+            }
+          }
+        }
+        .hidden-menu {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 195px;
+          line-height: 46px;
+          .hidden-menu-item {
+            transition: all .2s ease;
+            .left-icon {
+              width: 60px;
+            }
+            .right-title {
+              margin-left: -13px;
+              line-height: 46px;
+            }
+          }
+          
+        }
+        footer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          bottom: 0;
+          width: 60px;
+          height: 60px;
+          cursor: pointer;
+        }
+      }
+      .right {
+        position: relative;
+        z-index: 9;
+        left: 0;
+        height: 100%;
+        overflow: scroll;
+        .title {
+          font-weight: 500;
+        }
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
+        transition: all .25s;
+      }
+    }
+
+    // right-container
+    .main-container {
+      flex: 1;
+      &>section.m-16 {
+        margin-right: 10px;
+        height: calc(100vh - 126px);
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+        &::-webkit-scrollbar-button {
+          display: none;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          background: rgba(0, 0, 0, 0.12);
+        }
+        &::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+      }
+      
+    }
+  }
+}

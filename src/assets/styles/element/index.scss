@@ -1,0 +1,76 @@
+@import url("../variable/index.scss");
+// header-menu-popover
+.theme-dark-popper {
+  background-color: $color-dark !important;
+  border: none !important;
+  color: $color-w !important;
+  .el-popover__title {
+    color: $color-w !important;
+  }
+  .el-popper__arrow::before {
+    background: $color-dark !important;
+    border: none !important;
+  }
+}
+
+// popper-menu
+.popper-menu {
+  width: 100%;
+  li {
+    a {
+      display: block;
+      line-height: 40px;
+    }
+  }
+}
+
+// el-menu
+.el-menu {
+  border-right: none;
+  font-size: 12px;
+}
+.el-menu-item, .el-submenu__title {
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+}
+.el-submenu {
+  .el-menu-item {
+    height: 40px;
+    line-height: 40px;
+    min-width: auto;
+  }
+}
+.el-menu-item:hover,
+.el-submenu__title:hover {
+  color: $color-primary;
+  background-color: #fff !important;
+}
+.el-menu-item {
+  position: relative;
+}
+.el-menu-item.is-active {
+  background-color: #e6f7ff !important;
+}
+.el-menu-item::after{
+  opacity: 0;
+  transition: all .15s;
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 3px;
+  height: 0;
+  background-color: $color-primary;
+}
+.el-menu-item.is-active::after {
+  opacity: 1;
+  top: 0;
+  height: 100%;
+}
+
+
+// el-breadcrumb
+.el-breadcrumb {
+  line-height: 46px;
+}
