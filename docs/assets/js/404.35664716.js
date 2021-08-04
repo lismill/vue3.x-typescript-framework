@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["404"],{ced3:function(n,o,c){"use strict";c.r(o);var e=c("12d5"),t={class:"not-found"};function s(n,o){return Object(e["openBlock"])(),Object(e["createBlock"])("section",t,"not-found")}const d={};d.render=s;o["default"]=d}}]);
+//# sourceMappingURL=404.35664716.js.map
