@@ -7,9 +7,14 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import { homeConfig, setConfig } from '@/api/dashboard/index'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   setup() {
+    const store = useStore()
+    console.log('store.state?.screenFull?.full', store.state?.screenFull?.full)
+    store.dispatch('changeScreenFull')
+
     const init = async () => {
       try {
         const config = await homeConfig({})

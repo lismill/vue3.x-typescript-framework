@@ -1560,6 +1560,85 @@ npm run mock
 
 ## 1. Vuex
 
+### 1.1 安装依赖
+
+```shell
+cnpm install vuex --save
+```
+
+
+
+### 1.2 入口文件
+
+`./main.ts`
+
+```
+import store from './store'
+app.use(store)
+```
+
+
+
+### 1.3 创建 store
+
+`@/store/index.ts`
+
+```typescript
+import { createStore } from 'vuex'
+import screenFull from './screen-full'
+
+export default createStore({
+  modules: {
+    screenFull
+  }
+})
+```
+
+
+
+`@/store/screen-full/index.ts`
+
+```typescript
+import { ActionContext } from 'vuex'
+
+interface StateProps {
+  full: boolean
+}
+
+export default {
+  state: {
+    full: false
+  },
+  mutations: {
+    CHANGE_SCREEN_FULL(state: { full: boolean }): void {
+      state.full = !state.full
+    }
+  },
+  actions: {
+    changeScreenFull({ commit }: ActionContext<StateProps, ''>): void {
+      commit('CHANGE_SCREEN_FULL')
+    }
+  }
+}
+```
+
+
+
+### 1.4 使用方法
+
+```typescript
+const store = useStore()
+
+# 获取状态
+store.state?.screenFull?.full
+
+# 提交方法
+store.dispatch('changeScreenFull')
+store.commit('CHANGE_SCREEN_FULL')
+```
+
+
+
 ## 1. 公共组件
 
 ## 1. 自定义指令
