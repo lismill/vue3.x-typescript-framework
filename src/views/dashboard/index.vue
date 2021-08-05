@@ -1,18 +1,37 @@
 <template>
   <div class="dashboard">
-    <h1>Welcome！</h1>
+    <h1 @click="handleSetConfig">Welcome！</h1>
   </div>
 </template>
 
 <script lang='ts'>
 import { defineComponent } from 'vue'
-import { HomeConfig } from '@/api/dashboard/index'
+import { homeConfig, setConfig } from '@/api/dashboard/index'
 
 export default defineComponent({
-  setup () {
-    HomeConfig({}).then((res: any) => {
-      console.log(res)
-    }).catch((error: any) => console.log(error))
+  setup() {
+    const init = async () => {
+      try {
+        const config = await homeConfig({})
+        console.log('config', config)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+    init()
+
+    const handleSetConfig = async() => {
+      try {
+        const config = await setConfig({})
+        console.log('config', config)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+
+    return {
+      handleSetConfig
+    }
   }
 })
 </script>

@@ -34,8 +34,12 @@
   line-height: 40px;
   font-size: 12px;
 }
+.el-submenu__title {
+  font-weight: 700;
+}
 .el-submenu {
   .el-menu-item {
+    padding-left: 32px !important;
     height: 40px;
     line-height: 40px;
     min-width: auto;

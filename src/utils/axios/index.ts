@@ -1,58 +1,112 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import business from './business'
+import qs from 'qs'
 
-const BASE_URL = process.env.VUE_APP_BASE_URL ?? '/'
+// 创建请求
 const service = axios.create({
-  baseURL: BASE_URL,
-  timeout: 1000 * 10
+  baseURL: process.env.VUE_APP_BASE_URL,
+  headers: {
+    get: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+    },
+    post: {
+      'Content-Type': 'application/json;charset=utf-8'
+    }
+  },
+  withCredentials: true,
+  timeout: 1000 * 10,
+  transformRequest: [(data) => {
+    data = JSON.stringify(data)
+    return data
+  }],
+  transformResponse: [(data) => {
+    if (typeof data === 'string' && data.startsWith('{')) {
+      data = JSON.parse(data)
+    }
+    return data
+  }]
 })
 
-// 拦截请求数据
+/**
+ * 请求拦截器
+ */
 service.interceptors.request.use((config: AxiosRequestConfig) => {
-  // do something
-  return config
-}, (error: any) => Promise.reject(error))
+  // 请求开始对之前的请求做检查取消操作
+  removePending(config)
+  // 将当前请求添加到 pending 中
+  addPending(config)
 
-// 拦截返回数据
-service.interceptors.response.use(response => {
-  return new Promise((resolve, reject) => response.data.errCode === 0 ? resolve(response.data) : reject(response))
-}, (error: any) => Promise.reject(error))
-
-/**
- * get 方法，对应get请求
- * @param {String} url [请求的url地址]
- * @param {Object} params[请求携带的参数]]
- * @returns { Promise }
- */
-export const get = (url: string, params: AxiosRequestConfig): Promise<any> => new Promise((resolve, reject) => service.get(url, { params: params }).then(response => resolve(response.data)).catch(error => reject(error)))
+  // 根据业务拦截请求
+  return business.request(config)
+}, (error) => {
+  console.log('error:::', error)
+})
 
 /**
- * post 方法，对应post请求
- * @param {String} url [请求的url地址]
- * @param {Object} params[请求携带的参数]]
- * @returns { Promise }
+ * 响应拦截器
  */
-export const post = (url: string, params: AxiosRequestConfig): Promise<any> => new Promise((resolve, reject) => service.post(url, params).then(response => resolve(response.data)).catch(error => reject(error)))
+service.interceptors.response.use((response: AxiosResponse) => {
+  // 在请求结束后，移除本次请求
+  removePending(response)
+
+  // 根据业务拦截响应
+  return business.response(response)
+}, (error) => {
+  if (axios.isCancel(error)) {
+    console.log('repeated request: ' + error.message)
+  } else {
+    console.log('error:::', error)
+  }
+  return Promise.reject(error)
+})
+
+// 声明一个 Map 用于存储每个请求的标识 和 取消函数
+const pending = new Map()
+/**
+ * 添加请求
+ * @param {Object} config
+ */
+const addPending = (config: AxiosRequestConfig) => {
+  const url = [
+    config.method,
+    config.url,
+    qs.stringify(config.params),
+    qs.stringify(config.data)
+  ].join('&')
+  config.cancelToken = config.cancelToken || new axios.CancelToken(cancel => {
+    if (!pending.has(url)) {
+      // 如果 pending 中不存在当前请求，则添加进去
+      pending.set(url, cancel)
+    }
+  })
+}
+/**
+ * 移除请求
+ * @param {Object} config
+ */
+const removePending = (config: AxiosRequestConfig) => {
+  const url = [
+    config.method,
+    config.url,
+    qs.stringify(config.params),
+    qs.stringify(config.data)
+  ].join('&')
+  if (pending.has(url)) {
+    // 如果在 pending 中存在当前请求标识，需要取消当前请求，并且移除
+    const cancel = pending.get(url)
+    cancel(url)
+    pending.delete(url)
+  }
+}
 
 /**
- * delete 方法，对应delete请求
- * @param {String} url [请求的url地址]
- * @param {Object} params[请求携带的参数]]
- * @returns { Promise }
+ * 清空 pending 中的请求（在路由跳转时调用）
  */
-export const del = (url: string, params: AxiosRequestConfig): Promise<any> => new Promise((resolve, reject) => service.delete(url, { params: params }).then(response => resolve(response.data)).catch(error => reject(error)))
+export const clearPending = (): void => {
+  for (const [url, cancel] of pending) {
+    cancel(url)
+  }
+  pending.clear()
+}
 
-/**
- * patch 方法，对应patch请求
- * @param {String} url [请求的url地址]
- * @param {Object} params[请求携带的参数]]
- * @returns { Promise }
- */
-export const patch = (url: string, params: AxiosRequestConfig): Promise<any> => new Promise((resolve, reject) => service.patch(url, params).then(response => resolve(response.data)).catch(error => reject(error)))
-
-/**
- * put 方法，对应put请求
- * @param {String} url [请求的url地址]
- * @param {Object} params[请求携带的参数]]
- * @returns { Promise }
- */
-export const put = (url: string, params: AxiosRequestConfig): Promise<any> => new Promise((resolve, reject) => service.put(url, params).then(response => resolve(response.data)).catch(error => reject(error)))
+export default service

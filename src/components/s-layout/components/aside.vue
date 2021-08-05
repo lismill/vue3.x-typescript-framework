@@ -52,7 +52,6 @@
     >
       <div class="title p-lr20 p-tb14">{{ currentRoute[0]?.meta?.title }}</div>
       <el-menu
-        :unique-opened="true"
         :default-active="active"
         class="el-menu-vertical-demo"
         background-color="#fff"
@@ -81,8 +80,7 @@
                       :index="`${index}-${threeIndex}`"
                       @click="changeRoutes(three)"
                     >
-                      {{ three?.meta?.title ?? ""
-                      }}{{ `${index}-${threeIndex}` }}
+                      {{ three?.meta?.title ?? "" }}
                     </el-menu-item>
                   </template>
                 </section>

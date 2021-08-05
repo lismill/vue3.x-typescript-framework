@@ -1271,6 +1271,195 @@ export default router
 
 ## 1. Axios
 
+### 1.1 安装依赖
+
+```shell
+cnpm install axios --save
+```
+
+
+
+### 1.2 axios 配置
+
+```typescript
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import business from './business'
+import qs from 'qs'
+
+// 创建请求
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_URL,
+  headers: {
+    get: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+    },
+    post: {
+      'Content-Type': 'application/json;charset=utf-8'
+    }
+  },
+  withCredentials: true,
+  timeout: 1000 * 10,
+  transformRequest: [(data) => {
+    data = JSON.stringify(data)
+    return data
+  }],
+  transformResponse: [(data) => {
+    if (typeof data === 'string' && data.startsWith('{')) {
+      data = JSON.parse(data)
+    }
+    return data
+  }]
+})
+
+/**
+ * 请求拦截器
+ */
+service.interceptors.request.use((config: AxiosRequestConfig) => {
+  // 请求开始对之前的请求做检查取消操作
+  removePending(config)
+  // 将当前请求添加到 pending 中
+  addPending(config)
+
+  // 根据业务拦截请求
+  return business.request(config)
+}, (error) => {
+  console.log('error:::', error)
+})
+
+/**
+ * 响应拦截器
+ */
+service.interceptors.response.use((response: AxiosResponse) => {
+  // 在请求结束后，移除本次请求
+  removePending(response)
+
+  // 根据业务拦截响应
+  return business.response(response)
+}, (error) => {
+  if (axios.isCancel(error)) {
+    console.log('repeated request: ' + error.message)
+  } else {
+    console.log('error:::', error)
+  }
+  return Promise.reject(error)
+})
+
+// 声明一个 Map 用于存储每个请求的标识 和 取消函数
+const pending = new Map()
+/**
+ * 添加请求
+ * @param {Object} config
+ */
+const addPending = (config: AxiosRequestConfig) => {
+  const url = [
+    config.method,
+    config.url,
+    qs.stringify(config.params),
+    qs.stringify(config.data)
+  ].join('&')
+  config.cancelToken = config.cancelToken || new axios.CancelToken(cancel => {
+    if (!pending.has(url)) {
+      // 如果 pending 中不存在当前请求，则添加进去
+      pending.set(url, cancel)
+    }
+  })
+}
+/**
+ * 移除请求
+ * @param {Object} config
+ */
+const removePending = (config: AxiosRequestConfig) => {
+  const url = [
+    config.method,
+    config.url,
+    qs.stringify(config.params),
+    qs.stringify(config.data)
+  ].join('&')
+  if (pending.has(url)) {
+    // 如果在 pending 中存在当前请求标识，需要取消当前请求，并且移除
+    const cancel = pending.get(url)
+    cancel(url)
+    pending.delete(url)
+  }
+}
+
+/**
+ * 清空 pending 中的请求（在路由跳转时调用）
+ */
+export const clearPending = (): void => {
+  for (const [url, cancel] of pending) {
+    cancel(url)
+  }
+  pending.clear()
+}
+
+export default service
+
+```
+
+
+
+### 1.3 请求使用方法
+
+详见 `https://axios-http.com/zh/docs/api_intro`
+
+#### 1.3.1 @/api/dashboard/index.ts
+
+```typescript
+import httpRequest from '@/utils/axios/index'
+import { AxiosRequestConfig } from 'axios'
+
+export const homeConfig = async (params: AxiosRequestConfig): Promise<any> => httpRequest.get('api/home-config', params)
+export const setConfig = async (params: AxiosRequestConfig): Promise<any> => httpRequest.post('api/set-config', params)
+```
+
+
+
+#### 1.3.2 @/views/dashboard/index.vue
+
+```vue
+<template>
+  <div class="dashboard">
+    <h1>Welcome！</h1>
+    <el-button @click="handleSetConfig">测试POST请求</el-button>
+  </div>
+</template>
+
+<script lang='ts'>
+import { defineComponent } from 'vue'
+import { homeConfig, setConfig } from '@/api/dashboard/index'
+
+export default defineComponent({
+  setup() {
+    const init = async () => {
+      try {
+        const config = await homeConfig({})
+        console.log('config', config)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+    init()
+
+    const handleSetConfig = async() => {
+      try {
+        const config = await setConfig({})
+        console.log('config', config)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+
+    return {
+      handleSetConfig
+    }
+  }
+})
+</script>
+```
+
+
+
 ## 1. Mock
 
 ### 1.1 方式1：MOCK假数据

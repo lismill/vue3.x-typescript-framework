@@ -47,7 +47,8 @@ export default defineComponent({
 
       // 开启切换主题提示
       const loadingInstance = ElLoading.service({
-        text: '切换主题中...'
+        text: '切换主题中...',
+        background: 'rgba(0, 0, 0, .8)'
       })
 
       // 关闭切换主题提示

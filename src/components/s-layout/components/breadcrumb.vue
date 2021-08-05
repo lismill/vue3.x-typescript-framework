@@ -5,7 +5,12 @@
         v-for="(route, index) in currentRoute"
         :key="route.path"
       >
-        <template v-if="index === currentRoute.length">
+        <template
+          v-if="
+            index === currentRoute.length - 1 ||
+              index === currentRoute.length - 2
+          "
+        >
           {{ route.meta.title }}
         </template>
         <template v-else>
@@ -22,7 +27,6 @@ import { useRoute } from 'vue-router'
 
 export default defineComponent({
   setup () {
-    console.log('breadcrumb')
     const route = useRoute()
     const currentRoute = ref(toRaw(toRaw(route).matched))
 

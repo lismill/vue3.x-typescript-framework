@@ -16,5 +16,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-unused-vars': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
+    'space-before-function-paren': 0
   }
 }
