@@ -214,6 +214,22 @@ VUE_APP_BASE_URL = '/production'
 
 覆盖 `./public/favicon.ico` 文件
 
+`./vue.config.vue`
+```
+/**
+  * favicon.ico
+  */
+pwa: {
+  iconPaths: {
+    favicon32: 'favicon.ico',
+    favicon16: 'favicon.ico',
+    appleTouchIcon: 'favicon.ico',
+    maskIcon: 'favicon.ico',
+    msTileImage: 'favicon.ico'
+  }
+},
+```
+
 ### 1.2 配置网页标题
 
 #### 1.2.1 直接修改
@@ -443,9 +459,10 @@ createApp(App).component('s-svg-icon', svgIcon)
 
 ```json
 ├── src
-│  ├── assets
-│  ├── ├── images
-│  ├── ├── styles
+│  ├── api                                             # api 请求文件夹
+│  ├── assets                                          # 资源文件夹
+│  ├── ├── images                                      # 图片文件夹
+│  ├── ├── styles                                      # 样式文件夹
 │  ├── ├── ├── common                                  # 常用样式
 │  ├── ├── ├── element                                 # 覆盖 element 样式
 │  ├── ├── ├── guage                                   # 内外边距
@@ -468,6 +485,7 @@ createApp(App).component('s-svg-icon', svgIcon)
 │  ├── ├── index.ts                                    # vuex 入口文件
 │  ├── ├── modules                                     # vuex 模块
 │  ├── utils                                           # 工具类
+│  ├── ├── axios                                       # axios 请求封装
 │  ├── ├── common                                      # 全局公共方法
 │  ├── views                                           # 所有视图
 │  ├── App.vue                                         # 入口页面
