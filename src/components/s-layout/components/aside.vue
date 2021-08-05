@@ -2,52 +2,37 @@
   <aside class="aside-menu">
     <!-- 左侧图标菜单 -->
     <section class="left">
-      <section
-        class="icon"
-        @mouseenter="enterHiddenMenu"
-        @mouseleave="leaveHiddenMenu"
-      >
-        <!-- 图标菜单 -->
-        <template v-if="!hiddenMenu">
+      <section class="icon">
+        <!-- 鼠标经过显示隐藏菜单 -->
+        <section class="hidden-menu text-center">
           <section
+            class="hidden-menu-item cursor-pointer"
             v-for="item in routes"
             :key="item.path"
-            class="item"
             :class="{ active: item.path === currentRoute[0]?.path }"
             @click="changeRoutes(item)"
           >
-            <!-- 是否隐藏 -->
             <template v-if="!item?.meta?.hidden">
-              <section class="tooltip flex-center">
+              <div class="left-icon">
                 <s-svg-icon
                   :name="item?.meta?.icon ?? 'menu'"
                   :size="item?.meta?.size ?? '18px'"
                 />
-              </section>
+              </div>
+              <div class="right-title flex flex-center">
+                {{ item?.meta?.title }}
+                <s-svg-icon
+                  class="m-l4"
+                  name="angle-right"
+                  size="11px"
+                ></s-svg-icon>
+              </div>
             </template>
-          </section>
-        </template>
-
-        <!-- 鼠标经过显示隐藏菜单 -->
-        <section class="hidden-menu" v-show="hiddenMenu">
-          <section
-            class="hidden-menu-item flex cursor-pointer"
-            v-for="item in routes"
-            :key="item.path"
-            :class="{ active: item.path === currentRoute[0]?.path }"
-            @click="changeRoutes(item)"
-          >
-            <div class="left-icon text-center flex-center">
-              <s-svg-icon
-                :name="item?.meta?.icon ?? 'menu'"
-                :size="item?.meta?.size ?? '18px'"
-              />
-            </div>
-            <div class="right-title">{{ item?.meta?.title }}</div>
           </section>
         </section>
       </section>
 
+      <!-- 底部折叠按钮 -->
       <footer
         v-if="currentRoute[0]?.children.length"
         @click="collapse = !collapse"
@@ -177,21 +162,6 @@ export default defineComponent({
      */
     const changeRoutes = (route: { path: RouteLocationRaw }) => {
       router.push(route.path)
-      hiddenMenu.value = false
-    }
-
-    /**
-     * 鼠标进入左侧一级菜单
-     */
-    const hiddenMenu = ref(false)
-    const enterHiddenMenu = () => {
-      !hiddenMenu.value && (hiddenMenu.value = true)
-    }
-    /**
-     * 鼠标离开左侧一级菜单
-     */
-    const leaveHiddenMenu = () => {
-      hiddenMenu.value = false
     }
 
     return {
@@ -199,17 +169,8 @@ export default defineComponent({
       active,
       routes,
       currentRoute,
-      changeRoutes,
-      hiddenMenu,
-      enterHiddenMenu,
-      leaveHiddenMenu
+      changeRoutes
     }
   }
 })
 </script>
-<style lang="scss" scoped>
-.container-enter-to,
-.container-leave-active {
-  width: 195px;
-}
-</style>
